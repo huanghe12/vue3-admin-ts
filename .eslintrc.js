@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
+    '@typescript-eslint/no-non-null-assertion': 0,
     // html无子元素标签自动闭合
     'vue/html-self-closing': [
       'error',

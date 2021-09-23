@@ -9,23 +9,38 @@ const service = axios.create({
   timeout: 20000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/json',
-    token: get('token') || ''
+    'Content-Type': 'application/json'
   }
 })
 
+// 添加请求拦截器
 service.interceptors.request.use(
-  (config: any) => config,
+  (config: any) => {
+    // 判断有无token
+    if (get('token')) {
+      config.headers['token'] = get('token')
+    } else {
+      config.headers['token'] = ''
+    }
+    return config
+  },
   (error: any) => Promise.reject(error)
 )
 
+// 添加响应拦截器
 service.interceptors.response.use((response: any) => {
   if (typeof response.data !== 'object') {
-    ElMessage.error('服务端异常！')
-    return Promise.reject(response)
+    if (ElMessage.error) {
+      ElMessage.error('服务端异常！')
+      return Promise.reject(response)
+    }
   }
   if (response.data.resultCode != 200) {
-    if (response.data.message) ElMessage.error(response.data.message)
+    if (response.data.message) {
+      if (ElMessage.error) {
+        ElMessage.error(response.data.message)
+      }
+    }
 
     if (response.data.resultCode == 419) {
       router.push({ path: '/login' })

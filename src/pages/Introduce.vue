@@ -8,7 +8,6 @@
     <img
       style="width: 70%; display: block; margin: 0 auto"
       src="https://s.yezgea02.com/1616331765416/WechatIMG40038.png"
-      alt=""
     />
     <h1>开发及部署文档</h1>
     <img
@@ -65,41 +64,32 @@
       <li>Vite 2.x</li>
       <li>Vue-Router 4.x</li>
       <li>Element-Plus（适配全新 Vue 3.x 的 PC 端组件库）</li>
-      <li>Echarts 5.0</li>
+      <li>Echarts 5.2.1</li>
       <li>axios</li>
       <li>wangEditor</li>
     </ul>
     <h1>联系作者</h1>
     <ul>
-      <li>我的邮箱：2449207463@qq.com</li>
+      <li>原作者邮箱：2449207463@qq.com</li>
       <li>QQ技术交流群：932227898、707779034</li>
     </ul>
   </el-card>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'Introduce',
-    setup() {
-      const goJuejin = () => {
-        console.log('goJuejin')
-        window.open('https://juejin.cn/book/6933939264455442444', 'target')
-      }
-
-      return {
-        goJuejin
-      }
-    }
+<script lang="ts" setup>
+  const goJuejin = () => {
+    window.open('https://juejin.cn/book/6933939264455442444', 'target')
   }
 </script>
-<style scoped>
+<style scoped lang="less">
   .course {
     font-weight: bold;
     display: inline-block;
-  }
-  .course li {
-    line-height: 36px;
-    color: #409eff;
-    cursor: pointer;
+    margin-right: 50px;
+    li {
+      line-height: 36px;
+      color: #409eff;
+      cursor: pointer;
+    }
   }
 </style>

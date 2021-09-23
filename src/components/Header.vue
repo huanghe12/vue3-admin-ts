@@ -27,14 +27,14 @@
 </template>
 <script lang="ts" setup>
   import { Avatar, CaretBottom } from '@element-plus/icons'
-  import { remove, pathMap } from '@/utils/auth'
+  import { remove, pathMap, get } from '@/utils/auth'
   import { logout, getUserInfo } from '@/api'
   import { onMounted, reactive } from 'vue-demi'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
   const state = reactive({
-    name: '',
+    name: '系统介绍',
     userInfo: {} as any
   })
   // 获取个人信息
@@ -64,6 +64,9 @@
     justify-content: space-between;
     border-bottom: 1px solid #e9e9e9;
     padding: 0 20px;
+    .left {
+      font-size: 18px;
+    }
     .right {
       .author {
         display: flex;

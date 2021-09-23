@@ -66,8 +66,9 @@
         login(data).then((res: any) => {
           set('token', res)
           router.push('/')
-          resetForm()
         })
+        // 验证成功后重置表单项
+        resetForm()
       } else {
         console.error('error submit')
         return false

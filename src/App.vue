@@ -3,7 +3,8 @@
 </template>
 <script setup lang="ts">
   import { useRouter } from 'vue-router'
-  import { get, pathMap } from '@/utils/auth'
+  import { get, pathMap, remove } from '@/utils/auth'
+  import { onMounted } from 'vue-demi'
   // 添加路由守卫
   const router = useRouter()
   router.beforeEach((to, from, next) => {
