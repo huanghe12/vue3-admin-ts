@@ -36,8 +36,8 @@
   import { reactive, ref } from 'vue-demi'
   import { login } from '@/api'
   import { set } from '@/utils/auth'
-  import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
   import { useRouter } from 'vue-router'
+  import type { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 
   const router = useRouter()
   // 使用InstanceType<typeof ElForm>作为范型约束

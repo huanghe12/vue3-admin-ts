@@ -101,19 +101,23 @@
     Goods,
     Sell,
     StarFilled,
-    Menu as Menua, // menu可能是和别的地方冲突了,所以这里进行重命名
+    Menu as Menua, // menu和原生menu冲突了,所以这里进行重命名
     List,
     UserFilled,
     ShoppingBag,
     Lock
   } from '@element-plus/icons'
   import { reactive } from 'vue'
+  import { useRoute } from 'vue-router'
 
+  const route = useRoute()
   const state = reactive({
     // 默认打开的sub-menu的数组
     defaultOpens: ['1'],
     currentPath: '/introduce'
   })
+  // 使当前激活的菜单项在刷新页面后保持不变
+  state.currentPath = route.path
 </script>
 <style lang="less" scoped>
   .aside {
