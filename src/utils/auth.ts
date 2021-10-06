@@ -27,6 +27,9 @@ export function hasEmoji(str = '') {
   return str.match(reg) && str.match(reg)?.length
 }
 
+export const uploadImage = 'http://backend-api-02.newbee.ltd/manage-api/v1/upload/file'
+export const uploadImages = 'http://backend-api-02.newbee.ltd/manage-api/v1/upload/files'
+
 // 页面标题
 export const pathMap: any = {
   login: '登录',

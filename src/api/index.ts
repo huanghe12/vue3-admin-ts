@@ -1,5 +1,6 @@
+import { get } from '@/utils/auth'
 import request from '@/utils/axios'
-import { AxiosPromise } from 'axios'
+import { AxiosPromise, Method } from 'axios'
 // 登录
 export function login(data: { userName: string; passwordMd5: string }) {
   return request({
@@ -22,26 +23,26 @@ export function getUserInfo() {
     method: 'get'
   })
 }
-export function getUsers(data?: any): AxiosPromise<any> {
+// 获取用户信息
+export function getUsers(data?: any) {
   return request({
     url: '/users',
     method: 'get',
     data
   })
 }
-// 上传单张图片
-export function uploadImage(data?: any): AxiosPromise<any> {
+// 新增/修改商品
+export function addGoods(httpType: Method, data: any) {
   return request({
-    url: 'http://backend-api-02.newbee.ltd/manage-api/v1/upload/file',
-    method: 'get',
+    url: '/goods',
+    method: httpType,
     data
   })
 }
-// 上传多张图片
-export function uploadImages(data?: any): AxiosPromise<any> {
+// 获取商品分类
+export function getCategories(data: any) {
   return request({
-    url: 'http://backend-api-02.newbee.ltd/manage-api/v1/upload/files',
-    method: 'get',
-    data
+    url: `/categories?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}&categoryLevel=${data.categoryLevel}&parentId=${data.parentId}`,
+    method: 'get'
   })
 }
