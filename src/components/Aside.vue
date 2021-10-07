@@ -9,9 +9,9 @@
       background-color="#222832"
       text-color="#fff"
       active-text-color="#1BAEAE"
-      :default-openeds="state.defaultOpens"
+      :default-openeds="['1', '2', '3', '4']"
       :router="true"
-      :default-active="state.currentPath"
+      :default-active="props.currentPath"
     >
       <el-sub-menu index="1">
         <template #title>
@@ -64,7 +64,7 @@
             <el-icon> <menua /> </el-icon>
             <span>分类管理</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item index="/good">
             <el-icon> <shopping-bag /> </el-icon>
             <span>商品管理</span>
           </el-menu-item>
@@ -107,17 +107,9 @@
     ShoppingBag,
     Lock
   } from '@element-plus/icons'
-  import { reactive } from 'vue'
-  import { useRoute } from 'vue-router'
 
-  const route = useRoute()
-  const state = reactive({
-    // 默认打开的sub-menu的数组
-    defaultOpens: ['1'],
-    currentPath: '/introduce'
-  })
-  // 使当前激活的菜单项在刷新页面后保持不变
-  state.currentPath = route.path
+  // 接收App.vue传过来的参数，可以直接在模版中使用
+  const props = defineProps({ currentPath: String })
 </script>
 <style lang="less" scoped>
   .aside {

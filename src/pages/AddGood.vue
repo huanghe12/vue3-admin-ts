@@ -106,14 +106,18 @@
   import type { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
   import { addGoods, getCategories } from '@/api'
   import { Plus } from '@element-plus/icons'
-  import { uploadImage, get } from '@/utils/auth'
+  import { uploadImage, get, hasEmoji } from '@/utils/auth'
+  import type {
+    FileHandler,
+    FileResultHandler
+  } from 'element-plus/lib/components/upload/src/upload.type'
   // 指定input的宽度，需要修改时统一修改
   const inpWidth = 'width: 300px'
 
   const state = reactive({
     defaultCate: '请选择商品分类',
     goodsForm: {
-      categoryId: '',
+      goodsCategoryId: '',
       goodCategory: '',
       goodsName: '',
       goodsIntro: '',
@@ -122,7 +126,8 @@
       stockNum: '',
       goodsSellStatus: '0',
       goodsCoverImg: '',
-      tag: ''
+      tag: '',
+      goodsDetailContent: ''
     },
     rules: {
       goodCategory: [{ required: 'true', message: '请选择商品分类', trigger: ['change'] }],
@@ -142,7 +147,7 @@
           categoryLevel: level + 1,
           parentId: value || 0
         })
-        const list = res.list
+        const list = res.data.list
         const nodes = list.map((el: any) => ({
           value: el.categoryId,
           label: el.categoryName,
@@ -170,9 +175,10 @@
   })
   // 修改商品分类
   const changeCategory = (val: any) => {
-    state.goodsForm.categoryId = val[2] || 0
+    state.goodsForm.goodsCategoryId = val[2] || 0
   }
-  const beforeUploadImage = (file: File) => {
+  // 上传图片之前
+  const beforeUploadImage: FileHandler = (file) => {
     const index = file.name.lastIndexOf('.')
     const str = file.name.slice(index + 1)
     if (!['jpg', 'png', 'jpeg'].includes(str)) {
@@ -180,13 +186,42 @@
       return false
     }
   }
-  const uploadImageSuccesseed = () => {}
+  // 上传图片成功
+  const uploadImageSuccesseed: FileResultHandler = (response) => {
+    state.goodsForm.goodsCoverImg = response.data
+    ElMessage.success('上传成功')
+  }
   // 提交
   const submit = () => {
+    state.goodsForm.goodsDetailContent = instance?.txt.html() as string
     goodRef.value?.validate(async (valid) => {
       if (valid) {
+        if (
+          hasEmoji(state.goodsForm.goodsIntro) ||
+          hasEmoji(state.goodsForm.goodsName) ||
+          hasEmoji(state.goodsForm.tag) ||
+          hasEmoji(state.goodsForm.goodsDetailContent)
+        ) {
+          ElMessage.error('不要输入表情包，再输入就打死你个龟孙儿~')
+          return
+        }
+        if (state.goodsForm.goodsName.length > 128) {
+          ElMessage.error('商品名称不能超过128个字符')
+          return
+        }
+        if (state.goodsForm.goodsIntro.length > 200) {
+          ElMessage.error('商品简介不能超过200个字符')
+          return
+        }
+        if (state.goodsForm.tag.length > 16) {
+          ElMessage.error('商品标签不能超过16个字符')
+          return
+        }
+
         const res = await addGoods('post', state.goodsForm)
-        console.log(res)
+        if (res.data.resultCode === 200) {
+          ElMessage.success('添加成功')
+        }
       }
     })
   }
@@ -217,5 +252,10 @@
         }
       }
     }
+  }
+  .el-button {
+    background-color: #1baeae;
+    color: #fff;
+    border-color: #1baeae;
   }
 </style>

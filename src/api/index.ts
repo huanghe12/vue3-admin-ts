@@ -1,6 +1,5 @@
-import { get } from '@/utils/auth'
 import request from '@/utils/axios'
-import { AxiosPromise, Method } from 'axios'
+import { Method } from 'axios'
 // 登录
 export function login(data: { userName: string; passwordMd5: string }) {
   return request({
@@ -44,5 +43,20 @@ export function getCategories(data: any) {
   return request({
     url: `/categories?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}&categoryLevel=${data.categoryLevel}&parentId=${data.parentId}`,
     method: 'get'
+  })
+}
+// 获取商品列表
+export function getGoodList(data: any) {
+  return request({
+    url: `/goods/list?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`,
+    method: 'get'
+  })
+}
+// 上/下架商品
+export function changeStatus(data: any) {
+  return request({
+    url: `/goods/status/${data.status}`,
+    method: 'put',
+    data: data.ids
   })
 }

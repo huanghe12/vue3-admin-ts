@@ -51,8 +51,12 @@
     })
   }
   router.afterEach((to) => {
+    const { id } = to.query
     if (to.name) {
       state.name = pathMap[to.name]
+      if (id && to.name == 'add') {
+        state.name = '编辑商品'
+      }
     }
   })
 </script>

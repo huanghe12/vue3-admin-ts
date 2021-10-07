@@ -64,7 +64,7 @@
           passwordMd5: Md5.hashStr(formData.password)
         }
         login(data).then((res: any) => {
-          set('token', res)
+          set('token', res.data)
           router.push('/')
         })
         // 验证成功后重置表单项
