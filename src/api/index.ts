@@ -60,3 +60,25 @@ export function changeStatus(data: any) {
     data: data.ids
   })
 }
+// 获取商品信息
+export function getGoodsInfo({ id }: { id: string }) {
+  return request({
+    url: `/goods/${id}`,
+    method: 'get'
+  })
+}
+// 获取轮播图列表
+export function getCarousels(data: any) {
+  return request({
+    url: `/carousels?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`,
+    method: 'get'
+  })
+}
+// 删除轮播图
+export function deleteSwiper(data: any) {
+  return request({
+    url: '/carousels',
+    method: 'delete',
+    data
+  })
+}

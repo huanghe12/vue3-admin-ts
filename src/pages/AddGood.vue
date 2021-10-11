@@ -94,7 +94,7 @@
         <div ref="editor" />
       </el-form-item>
       <el-form-item>
-        <el-button @click="submit">立即添加</el-button>
+        <el-button @click="submit">{{ id ? '立即修改' : '立即添加' }}</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -104,21 +104,25 @@
   import { ref, reactive, onMounted, onBeforeUnmount } from 'vue-demi'
   import { CascaderProps, ElForm, ElMessage } from 'element-plus'
   import type { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
-  import { addGoods, getCategories } from '@/api'
+  import { addGoods, getCategories, getGoodsInfo } from '@/api'
   import { Plus } from '@element-plus/icons'
-  import { uploadImage, get, hasEmoji } from '@/utils/auth'
+  import { uploadImage, get, hasEmoji, uploadImages } from '@/utils/auth'
   import type {
     FileHandler,
     FileResultHandler
   } from 'element-plus/lib/components/upload/src/upload.type'
+  import { useRoute } from 'vue-router'
   // 指定input的宽度，需要修改时统一修改
   const inpWidth = 'width: 300px'
 
+  const route = useRoute()
+
+  const id = <string>route.query.id
   const state = reactive({
     defaultCate: '请选择商品分类',
     goodsForm: {
       goodsCategoryId: '',
-      goodCategory: '',
+      goodCategory: [] as any,
       goodsName: '',
       goodsIntro: '',
       originalPrice: '',
@@ -128,7 +132,7 @@
       goodsCoverImg: '',
       tag: '',
       goodsDetailContent: ''
-    },
+    } as any,
     rules: {
       goodCategory: [{ required: 'true', message: '请选择商品分类', trigger: ['change'] }],
       goodsCoverImg: [{ required: 'true', message: '请上传主图', trigger: ['change'] }],
@@ -163,16 +167,71 @@
   const editor = ref<null | HTMLElement>(null)
 
   let instance: E | null
-
-  onMounted(() => {
+  onMounted(async () => {
     instance = new E(editor.value)
+    // 隐藏插入网络图片的功能，只保留上传本地图片
+    instance.config.showLinkImg = false
+    // 限制上传图片的大小
+    instance.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M
+    // 自定义filename
+    instance.config.uploadFileName = 'file'
+    // 上传图片时添加 http 请求的 header
+    instance.config.uploadImgHeaders = {
+      token: get('token') || ''
+    }
+    // 上传图片的接口
+    instance.config.uploadImgServer = uploadImages
+    // 图片返回格式不同，需要自定义返回格式
+    instance.config.uploadImgHooks = {
+      // 图片上传并返回了结果，想要自己把图片插入到编辑器中
+      // 例如服务器端返回的不是 { errno: 0, data: [...] } 这种格式，可使用 customInsert
+      customInsert: function (insertImgFn, result) {
+        // result 即服务端返回的接口
+        // insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
+        if (result.data && result.data.length) {
+          result.data.map((item) => {
+            // 使用call修改this指向
+            insertImgFn.call(instance!, item as string)
+          })
+        }
+      }
+    }
     instance.create()
+    if (id) {
+      const res = await getGoodsInfo({ id })
+      const { goods, firstCategory, secondCategory, thirdCategory } = res.data
+      if (res.resultCode === 200) {
+        state.goodsForm.goodsName = goods.goodsName
+        state.goodsForm.goodsIntro = goods.goodsIntro
+        state.goodsForm.originalPrice = goods.originalPrice
+        state.goodsForm.sellingPrice = goods.sellingPrice
+        state.goodsForm.stockNum = goods.stockNum
+        state.goodsForm.goodsSellStatus = String(goods.goodsSellStatus)
+        state.goodsForm.tag = goods.tag
+        state.goodsForm.goodsCoverImg = handleImageUrl(goods.goodsCoverImg)
+        state.goodsForm.goodsCategoryId = goods.goodsCategoryId
+        state.goodsForm.goodCategory.push(
+          firstCategory.categoryId,
+          secondCategory.categoryId,
+          thirdCategory.categoryId
+        )
+        state.defaultCate = `${firstCategory.categoryName}/${secondCategory.categoryName}/${thirdCategory.categoryName}`
+        instance.txt.html(goods.goodsDetailContent)
+      }
+    }
   })
-
   onBeforeUnmount(() => {
     instance?.destroy()
     instance = null
   })
+  // 处理图片url
+  const handleImageUrl = (url: string) => {
+    if (url && url.startsWith('http')) {
+      return url
+    } else {
+      return `http://backend-api-02.newbee.ltd${url}`
+    }
+  }
   // 修改商品分类
   const changeCategory = (val: any) => {
     state.goodsForm.goodsCategoryId = val[2] || 0
@@ -217,10 +276,12 @@
           ElMessage.error('商品标签不能超过16个字符')
           return
         }
-
-        const res = await addGoods('post', state.goodsForm)
-        if (res.data.resultCode === 200) {
-          ElMessage.success('添加成功')
+        if (id) {
+          state.goodsForm.goodsId = id
+        }
+        const res = await addGoods(id ? 'put' : 'post', state.goodsForm)
+        if (res.resultCode === 200) {
+          ElMessage.success(id ? '修改成功' : '添加成功')
         }
       }
     })
@@ -250,6 +311,20 @@
             }
           }
         }
+      }
+    }
+  }
+  :deep(.el-radio-group) {
+    .is-checked {
+      color: #1baeae;
+      .is-checked {
+        .el-radio__inner {
+          border-color: #1baeae;
+          background-color: #1baeae;
+        }
+      }
+      .el-radio__label {
+        color: #1baeae;
       }
     }
   }

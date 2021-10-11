@@ -27,7 +27,7 @@
 </template>
 <script lang="ts" setup>
   import { Avatar, CaretBottom } from '@element-plus/icons'
-  import { remove, pathMap, get } from '@/utils/auth'
+  import { remove, pathMap } from '@/utils/auth'
   import { logout, getUserInfo } from '@/api'
   import { onMounted, reactive } from 'vue-demi'
   import { useRouter } from 'vue-router'

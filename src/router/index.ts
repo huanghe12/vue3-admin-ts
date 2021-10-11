@@ -26,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/pages/Good.vue')
   },
   {
+    path: '/swiper',
+    name: 'swiper',
+    component: () => import('@/pages/Swiper.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/pages/Login.vue')

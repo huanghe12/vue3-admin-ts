@@ -32,12 +32,13 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
+      <div class="line" />
       <el-sub-menu index="2">
         <template #title>
           <span>首页配置</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item>
+          <el-menu-item index="/swiper">
             <el-icon> <picture-filled /> </el-icon>
             <span>轮播图配置</span>
           </el-menu-item>
@@ -55,6 +56,7 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
+      <div class="line" />
       <el-sub-menu index="3">
         <template #title>
           <span>模块管理</span>
@@ -78,6 +80,7 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
+      <div class="line" />
       <el-sub-menu index="4">
         <template #title>
           <span>系统管理</span>

@@ -22,7 +22,7 @@
 
   const state = reactive({
     // 定义一个状态，是否显示侧边栏等组件
-    flag: false,
+    flag: true,
     currentPath: '/introduce'
   })
   // 全局前置守卫
@@ -45,9 +45,13 @@
   })
   // 全局后置守卫
   router.afterEach((to) => {
+    const { id } = to.query
     if (to.name) {
       // 改变页面标题
       document.title = pathMap[to.name]
+      if (id && to.name == 'add') {
+        document.title = '编辑商品'
+      }
     }
   })
 </script>
