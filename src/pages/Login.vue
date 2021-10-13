@@ -127,7 +127,7 @@
         width: 70%;
         .el-form-item {
           margin-top: 15px;
-          /deep/.el-form-item__label {
+          :deep(.el-form-item__label) {
             padding: 0;
           }
         }

@@ -42,7 +42,7 @@
             <el-icon> <picture-filled /> </el-icon>
             <span>轮播图配置</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item index="/hot">
             <el-icon> <goods /> </el-icon>
             <span>热销商品配置</span>
           </el-menu-item>
@@ -86,7 +86,7 @@
           <span>系统管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item>
+          <el-menu-item index="/account">
             <el-icon> <lock /> </el-icon>
             <span>修改密码</span>
           </el-menu-item>

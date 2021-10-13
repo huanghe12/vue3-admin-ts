@@ -36,6 +36,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/pages/Login.vue')
   },
   {
+    path: '/hot',
+    name: 'hot',
+    component: () => import('@/pages/HotSell.vue')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import('@/pages/Account.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/pages/NotFound.vue')

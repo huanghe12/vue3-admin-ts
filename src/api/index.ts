@@ -82,3 +82,18 @@ export function deleteSwiper(data: any) {
     data
   })
 }
+// 获取轮播图详情
+export function getSwiperDetails(data: string) {
+  return request({
+    url: `/carousels/${data}`,
+    method: 'get'
+  })
+}
+// 添加/修改轮播图
+export function changeSwiper(type: Method, data: any) {
+  return request({
+    url: `/carousels`,
+    method: type,
+    data
+  })
+}

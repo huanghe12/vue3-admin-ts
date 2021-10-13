@@ -101,7 +101,7 @@
 </template>
 <script lang="ts" setup>
   import E from 'wangeditor'
-  import { ref, reactive, onMounted, onBeforeUnmount } from 'vue-demi'
+  import { ref, reactive, onMounted, onBeforeUnmount, toRefs } from 'vue-demi'
   import { CascaderProps, ElForm, ElMessage } from 'element-plus'
   import type { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
   import { addGoods, getCategories, getGoodsInfo } from '@/api'
@@ -189,10 +189,8 @@
         // result 即服务端返回的接口
         // insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
         if (result.data && result.data.length) {
-          result.data.map((item) => {
-            // 使用call修改this指向
-            insertImgFn.call(instance!, item as string)
-          })
+          // 使用call修改this指向
+          result.data.forEach((item) => insertImgFn.call(instance!, item as string))
         }
       }
     }
@@ -201,20 +199,22 @@
       const res = await getGoodsInfo({ id })
       const { goods, firstCategory, secondCategory, thirdCategory } = res.data
       if (res.resultCode === 200) {
-        state.goodsForm.goodsName = goods.goodsName
-        state.goodsForm.goodsIntro = goods.goodsIntro
-        state.goodsForm.originalPrice = goods.originalPrice
-        state.goodsForm.sellingPrice = goods.sellingPrice
-        state.goodsForm.stockNum = goods.stockNum
-        state.goodsForm.goodsSellStatus = String(goods.goodsSellStatus)
-        state.goodsForm.tag = goods.tag
-        state.goodsForm.goodsCoverImg = handleImageUrl(goods.goodsCoverImg)
-        state.goodsForm.goodsCategoryId = goods.goodsCategoryId
-        state.goodsForm.goodCategory.push(
-          firstCategory.categoryId,
-          secondCategory.categoryId,
-          thirdCategory.categoryId
-        )
+        state.goodsForm = {
+          goodsName: goods.goodsName,
+          goodsIntro: goods.goodsIntro,
+          originalPrice: goods.originalPrice,
+          sellingPrice: goods.sellingPrice,
+          stockNum: goods.stockNum,
+          goodsSellStatus: String(goods.goodsSellStatus),
+          tag: goods.tag,
+          goodsCoverImg: handleImageUrl(goods.goodsCoverImg),
+          goodsCategoryId: goods.goodsCategoryId,
+          goodCategory: [
+            firstCategory.categoryId,
+            secondCategory.categoryId,
+            thirdCategory.categoryId
+          ]
+        }
         state.defaultCate = `${firstCategory.categoryName}/${secondCategory.categoryName}/${thirdCategory.categoryName}`
         instance.txt.html(goods.goodsDetailContent)
       }
@@ -286,7 +286,7 @@
       }
     })
   }
-  const goodsForm = state.goodsForm
+  const { goodsForm } = toRefs(state)
 </script>
 <style lang="less" scoped>
   .el-form {
