@@ -97,3 +97,26 @@ export function changeSwiper(type: Method, data: any) {
     data
   })
 }
+// 查询订单
+export function getOrders(data: any) {
+  return request({
+    url: `/orders?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}&orderNo=${data.orderNo}&orderStatus=${data.orderStatus}`,
+    method: 'get'
+  })
+}
+// 修改name
+export function changeName(data: { loginUserName: string; nickName: string }) {
+  return request({
+    url: `/adminUser/name`,
+    method: 'put',
+    data
+  })
+}
+// 修改密码
+export function changepassword(data: { originalPassword: string; newPassword: string }) {
+  return request({
+    url: `/adminUser/password`,
+    method: 'put',
+    data
+  })
+}

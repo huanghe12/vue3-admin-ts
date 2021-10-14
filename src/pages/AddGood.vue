@@ -101,7 +101,7 @@
 </template>
 <script lang="ts" setup>
   import E from 'wangeditor'
-  import { ref, reactive, onMounted, onBeforeUnmount, toRefs } from 'vue-demi'
+  import { ref, reactive, onMounted, onBeforeUnmount, toRefs, getCurrentInstance } from 'vue'
   import { CascaderProps, ElForm, ElMessage } from 'element-plus'
   import type { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
   import { addGoods, getCategories, getGoodsInfo } from '@/api'
@@ -115,6 +115,7 @@
   // 指定input的宽度，需要修改时统一修改
   const inpWidth = 'width: 300px'
 
+  const { proxy } = getCurrentInstance()!
   const route = useRoute()
 
   const id = <string>route.query.id
@@ -207,7 +208,7 @@
           stockNum: goods.stockNum,
           goodsSellStatus: String(goods.goodsSellStatus),
           tag: goods.tag,
-          goodsCoverImg: handleImageUrl(goods.goodsCoverImg),
+          goodsCoverImg: proxy!.$filters.prefix(goods.goodsCoverImg),
           goodsCategoryId: goods.goodsCategoryId,
           goodCategory: [
             firstCategory.categoryId,
@@ -224,14 +225,14 @@
     instance?.destroy()
     instance = null
   })
-  // 处理图片url
-  const handleImageUrl = (url: string) => {
-    if (url && url.startsWith('http')) {
-      return url
-    } else {
-      return `http://backend-api-02.newbee.ltd${url}`
-    }
-  }
+  // // 处理图片url
+  // const handleImageUrl = (url: string) => {
+  //   if (url && url.startsWith('http')) {
+  //     return url
+  //   } else {
+  //     return `http://backend-api-02.newbee.ltd${url}`
+  //   }
+  // }
   // 修改商品分类
   const changeCategory = (val: any) => {
     state.goodsForm.goodsCategoryId = val[2] || 0

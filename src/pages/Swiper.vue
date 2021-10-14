@@ -32,7 +32,11 @@
       <el-table-column label="操作" align="center">
         <template #default="{ row }">
           <el-button type="text" @click="changeSwiper(row.carouselId)">修改</el-button>
-          <el-button type="text" @click="delSwiper(row.carouselId)">删除</el-button>
+          <el-popconfirm title="确定删除吗？" @confirm="delSwiper(row.carouselId)">
+            <template #reference>
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>

@@ -21,7 +21,11 @@
       </el-table-column>
       <el-table-column label="商品图片" align="center" width="150px">
         <template #default="{ row }">
-          <img style="height: 100px; width: 100px" :src="row.goodsCoverImg" alt="商品主图" />
+          <img
+            style="height: 100px; width: 100px"
+            :src="$filters.prefix(row.goodsCoverImg)"
+            alt="商品主图"
+          />
         </template>
       </el-table-column>
       <el-table-column label="商品库存" align="center">
@@ -91,14 +95,6 @@
     }
     const res = await getGoodList(data)
     goodList.value = res.data.list
-    // vue3.x不建议使用过滤器，因此使用方法修改图片url
-    goodList.value.forEach((el) => {
-      if (el.goodsCoverImg && el.goodsCoverImg.startsWith('http')) {
-        el.goodsCoverImg = el.goodsCoverImg
-      } else {
-        el.goodsCoverImg = `http://backend-api-02.newbee.ltd${el.goodsCoverImg}`
-      }
-    })
     state.total = res.data.totalCount
     state.pageNumber = res.data.currPage
     state.loading = false

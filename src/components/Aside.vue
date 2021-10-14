@@ -74,7 +74,7 @@
             <el-icon> <user-filled /> </el-icon>
             <span>会员管理</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item index="/order">
             <el-icon> <list /> </el-icon>
             <span>订单管理</span>
           </el-menu-item>

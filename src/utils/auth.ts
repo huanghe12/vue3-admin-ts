@@ -46,6 +46,6 @@ export const pathMap: any = {
   good: '商品管理',
   guest: '会员管理',
   order: '订单管理',
-  order_detail: '订单详情',
+  orderDetails: '订单详情',
   account: '修改账户'
 }
