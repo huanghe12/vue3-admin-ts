@@ -104,6 +104,37 @@ export function getOrders(data: any) {
     method: 'get'
   })
 }
+// 配货
+export function checkDone(data: any) {
+  return request({
+    url: `/orders/checkDone`,
+    method: 'put',
+    data
+  })
+}
+// 出库
+export function checkOut(data: any) {
+  return request({
+    url: `/orders/checkOut`,
+    method: 'put',
+    data
+  })
+}
+// 出库
+export function checkClose(data: any) {
+  return request({
+    url: `/orders/close`,
+    method: 'put',
+    data
+  })
+}
+// 出库
+export function orderDetails(data: any) {
+  return request({
+    url: `/orders/${data}`,
+    method: 'get'
+  })
+}
 // 修改name
 export function changeName(data: { loginUserName: string; nickName: string }) {
   return request({

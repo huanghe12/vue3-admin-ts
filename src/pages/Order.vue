@@ -22,11 +22,15 @@
           :value="item.value"
         />
       </el-select>
-      <el-button type="primary" size="small" icon="el-icon-s-home" class="btn">
+      <el-button type="primary" size="small" icon="el-icon-s-home" @click="distribution()">
         配货完成
       </el-button>
-      <el-button type="primary" size="small" icon="el-icon-s-home" class="btn">出库</el-button>
-      <el-button size="small" icon="el-icon-delete" type="danger">关闭订单</el-button>
+      <el-button type="primary" size="small" icon="el-icon-s-home" @click="ExWarehouse()"
+        >出库</el-button
+      >
+      <el-button size="small" icon="el-icon-delete" type="danger" @click="closeOrder()"
+        >关闭订单</el-button
+      >
     </template>
     <el-table
       v-loading="loading"
@@ -52,36 +56,57 @@
       <el-table-column label="创建时间" align="center" prop="createTime" />
       <el-table-column label="操作" align="center">
         <template #default="{ row }">
-          <el-popconfirm v-if="row.orderStatus === '1'" title="确定配货完成吗？">
+          <el-popconfirm
+            v-if="row.orderStatus === 1"
+            title="确定配货完成吗？"
+            @confirm="distribution(row.orderId)"
+          >
             <template #reference>
               <el-button type="text">配货完成</el-button>
             </template>
           </el-popconfirm>
-          <el-popconfirm v-if="row.orderStatus === '2'" title="确定出库吗？">
+          <el-popconfirm
+            v-if="row.orderStatus === 2"
+            title="确定出库吗？"
+            @confirm="ExWarehouse(row.orderId)"
+          >
             <template #reference>
               <el-button type="text">出库</el-button>
             </template>
           </el-popconfirm>
           <el-popconfirm
-            v-if="!(row.orderStatus === '4' || row.orderStatus < 0)"
+            v-if="!(row.orderStatus === 4 || row.orderStatus < 0)"
             title="确定关闭订单吗？"
+            @confirm="closeOrder(row.orderId)"
           >
             <template #reference>
               <el-button type="text">关闭订单</el-button>
             </template>
           </el-popconfirm>
-          <router-link to="/orderDetails" style="margin-left: 8px">订单详情</router-link>
+          <el-button type="text" style="margin-left: 8px" @click="viewDetails(row.orderId)"
+            >订单详情</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      v-model:page-size="pageSize"
+      v-model:current-page="pageNumber"
+      background
+      layout="prev, pager, next"
+      :total="total"
+      @current-change="queryOrders"
+    />
   </el-card>
 </template>
 
 <script lang="ts" setup>
-  import { getOrders } from '@/api'
-  import { SelectOptionProxy } from 'element-plus'
+  import { checkClose, checkDone, checkOut, getOrders } from '@/api'
+  import { ElMessage, SelectOptionProxy } from 'element-plus'
   import { onMounted, reactive, toRefs } from 'vue-demi'
+  import { useRouter } from 'vue-router'
 
+  const router = useRouter()
   const state = reactive({
     loading: true,
     orderList: <any[]>[],
@@ -151,10 +176,83 @@
   const handleSelectChange = (val: any[]) => {
     state.multipleSelection = val
   }
+  // 配货
+  const distribution = async (id?: string) => {
+    let data
+    if (id) {
+      data = { ids: [id] }
+    } else {
+      if (!state.multipleSelection.length) {
+        ElMessage.error('请选择项')
+        return
+      }
+      data = { ids: state.multipleSelection.map((el) => el.orderId) }
+    }
+    try {
+      const res = await checkDone(data)
+      if (res.resultCode === 200) {
+        ElMessage.success('配货成功')
+        queryOrders()
+      }
+    } catch (error) {}
+  }
+  const ExWarehouse = async (id?: string) => {
+    let data
+    if (id) {
+      data = { ids: [id] }
+    } else {
+      if (!state.multipleSelection.length) {
+        ElMessage.error('请选择项')
+        return
+      }
+      data = { ids: state.multipleSelection.map((el) => el.orderId) }
+    }
+    try {
+      const res = await checkOut(data)
+      if (res.resultCode === 200) {
+        ElMessage.success('出库成功')
+        queryOrders()
+      }
+    } catch (error) {}
+  }
+  const closeOrder = async (id?: string) => {
+    let data
+    if (id) {
+      data = { ids: [id] }
+    } else {
+      if (!state.multipleSelection.length) {
+        ElMessage.error('请选择项')
+        return
+      }
+      data = { ids: state.multipleSelection.map((el) => el.orderId) }
+    }
+    try {
+      const res = await checkClose(data)
+      if (res.resultCode === 200) {
+        ElMessage.success('关闭成功')
+        queryOrders()
+      }
+    } catch (error) {}
+  }
+  // 查询
   const handleOption = () => {
     state.pageNumber = 1
     queryOrders()
   }
-  const { loading, orderList, orderStatus, orderNo, options } = toRefs(state)
+  const viewDetails = (id: string) => {
+    router.push({
+      path: '/orderDetails',
+      query: {
+        id: id
+      }
+    })
+  }
+  const { loading, orderList, orderStatus, orderNo, options, total, pageNumber, pageSize } =
+    toRefs(state)
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  :deep(.el-pagination) {
+    margin-top: 15px;
+    text-align: center;
+  }
+</style>

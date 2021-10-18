@@ -144,17 +144,17 @@
       width: 100%;
       border: none;
       background: #222832;
-      :deep(.is-opened) {
+      :deep(.el-sub-menu) {
         .el-menu--inline {
           background-color: #222832;
           .el-menu-item-group {
             .el-menu-item {
               color: #fff;
               &:focus {
-                background-color: transparent;
+                background-color: rgb(34, 40, 50);
               }
               &:hover {
-                background-color: transparent;
+                background-color: rgb(34, 40, 50);
               }
             }
             .is-active {
