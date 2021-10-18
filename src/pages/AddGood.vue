@@ -94,7 +94,7 @@
         <div ref="editor" />
       </el-form-item>
       <el-form-item>
-        <el-button @click="submit">{{ id ? '立即修改' : '立即添加' }}</el-button>
+        <el-button type="primary" @click="submit">{{ id ? '立即修改' : '立即添加' }}</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -315,23 +315,23 @@
       }
     }
   }
-  :deep(.el-radio-group) {
-    .is-checked {
-      color: #1baeae;
-      .is-checked {
-        .el-radio__inner {
-          border-color: #1baeae;
-          background-color: #1baeae;
-        }
-      }
-      .el-radio__label {
-        color: #1baeae;
-      }
-    }
-  }
-  .el-button {
-    background-color: #1baeae;
-    color: #fff;
-    border-color: #1baeae;
-  }
+  // :deep(.el-radio-group) {
+  //   .is-checked {
+  //     color: #1baeae;
+  //     .is-checked {
+  //       .el-radio__inner {
+  //         border-color: #1baeae;
+  //         background-color: #1baeae;
+  //       }
+  //     }
+  //     .el-radio__label {
+  //       color: #1baeae;
+  //     }
+  //   }
+  // }
+  // .el-button {
+  //   background-color: #1baeae;
+  //   color: #fff;
+  //   border-color: #1baeae;
+  // }
 </style>

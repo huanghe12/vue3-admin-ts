@@ -1,12 +1,20 @@
 <template>
   <el-card class="swiper-container">
     <template #header>
-      <el-button icon="el-icon-plus" size="small" class="add-btn" @click="changeSwiper()"
-        >新增</el-button
+      <el-button
+        type="primary"
+        icon="el-icon-plus"
+        size="small"
+        class="add-btn"
+        @click="changeSwiper()"
       >
+        新增
+      </el-button>
       <el-popconfirm title="确定删除吗？" @confirm="delSwiper">
         <template #reference>
-          <el-button icon="el-icon-delete" size="small" class="del-btn">批量删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="small" class="del-btn"
+            >批量删除</el-button
+          >
         </template>
       </el-popconfirm>
     </template>
@@ -112,16 +120,6 @@
 </script>
 <style lang="less" scoped>
   .swiper-container {
-    .add-btn {
-      color: #fff;
-      background-color: #1baeae;
-      border-color: #1baeae;
-    }
-    .del-btn {
-      color: #fff;
-      background-color: #f78989;
-      border-color: #f78989;
-    }
     img {
       width: 150px;
       height: 150px;
@@ -129,11 +127,6 @@
     :deep(.el-pagination) {
       margin-top: 15px;
       text-align: center;
-      .el-pager {
-        li:not(.disabled).active {
-          background-color: #1baeae;
-        }
-      }
     }
   }
 </style>

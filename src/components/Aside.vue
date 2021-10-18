@@ -143,6 +143,26 @@
     .el-menu {
       width: 100%;
       border: none;
+      background: #222832;
+      :deep(.is-opened) {
+        .el-menu--inline {
+          background-color: #222832;
+          .el-menu-item-group {
+            .el-menu-item {
+              color: #fff;
+              &:focus {
+                background-color: transparent;
+              }
+              &:hover {
+                background-color: transparent;
+              }
+            }
+            .is-active {
+              color: #1baeae;
+            }
+          }
+        }
+      }
       .el-icon {
         font-size: 18px;
         margin-right: 8px;

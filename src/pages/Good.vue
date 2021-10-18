@@ -1,7 +1,9 @@
 <template>
   <el-card class="good-card">
     <template #header>
-      <el-button icon="el-icon-plus" class="btn" @click="addGood"> 添加商品 </el-button>
+      <el-button type="primary" icon="el-icon-plus" class="btn" @click="addGood"
+        >添加商品</el-button
+      >
     </template>
     <el-table v-loading="state.loading" :data="goodList" :lazy="true" style="width: 100%">
       <el-table-column label="商品编号" align="center">
@@ -127,19 +129,9 @@
 <style lang="less" scoped>
   .good-card {
     min-height: 100%;
-    .btn {
-      background-color: #1baeae;
-      color: #fff;
-      border-color: #1baeae;
-    }
     :deep(.el-pagination) {
       margin-top: 15px;
       text-align: center;
-      .el-pager {
-        li:not(.disabled).active {
-          background-color: #1baeae;
-        }
-      }
     }
   }
 </style>

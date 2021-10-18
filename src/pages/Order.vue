@@ -22,6 +22,11 @@
           :value="item.value"
         />
       </el-select>
+      <el-button type="primary" size="small" icon="el-icon-s-home" class="btn">
+        配货完成
+      </el-button>
+      <el-button type="primary" size="small" icon="el-icon-s-home" class="btn">出库</el-button>
+      <el-button size="small" icon="el-icon-delete" type="danger">关闭订单</el-button>
     </template>
     <el-table
       v-loading="loading"
