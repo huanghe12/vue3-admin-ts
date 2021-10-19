@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/pages/HotSell.vue')
   },
   {
+    path: '/guest',
+    name: 'guest',
+    component: () => import('@/pages/Guest.vue')
+  },
+  {
     path: '/order',
     name: 'order',
     component: () => import('@/pages/Order.vue')

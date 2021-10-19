@@ -161,13 +161,15 @@
   })
   const queryOrders = async () => {
     state.loading = true
-    const params = {
-      pageNumber: state.pageNumber,
-      pageSize: state.pageSize,
-      orderNo: state.orderNo,
-      orderStatus: state.orderStatus
+    const queryData = {
+      params: {
+        pageNumber: state.pageNumber,
+        pageSize: state.pageSize,
+        orderNo: state.orderNo,
+        orderStatus: state.orderStatus
+      }
     }
-    const res = await getOrders(params)
+    const res = await getOrders(queryData)
     const { data } = res
     state.orderList = data.list
     state.total = data.totalCount

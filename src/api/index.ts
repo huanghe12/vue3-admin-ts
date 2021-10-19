@@ -97,11 +97,36 @@ export function changeSwiper(type: Method, data: any) {
     data
   })
 }
+// 查询用户
+export function getGuests(data: any) {
+  return request({
+    url: `/users`,
+    method: 'get',
+    ...data
+  })
+}
+// 禁用用户
+export function disableGuests(data: any) {
+  return request({
+    url: `/users/0`,
+    method: 'put',
+    data
+  })
+}
+// 解除禁用用户
+export function disablementGuests(data: any) {
+  return request({
+    url: `/users/1`,
+    method: 'put',
+    data
+  })
+}
 // 查询订单
 export function getOrders(data: any) {
   return request({
-    url: `/orders?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}&orderNo=${data.orderNo}&orderStatus=${data.orderStatus}`,
-    method: 'get'
+    url: `/orders`,
+    method: 'get',
+    ...data
   })
 }
 // 配货
@@ -120,7 +145,7 @@ export function checkOut(data: any) {
     data
   })
 }
-// 出库
+// 关闭订单
 export function checkClose(data: any) {
   return request({
     url: `/orders/close`,
@@ -128,7 +153,7 @@ export function checkClose(data: any) {
     data
   })
 }
-// 出库
+// 订单详情
 export function orderDetails(data: any) {
   return request({
     url: `/orders/${data}`,
