@@ -62,7 +62,7 @@
           <span>模块管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item>
+          <el-menu-item index="/category">
             <el-icon> <menua /> </el-icon>
             <span>分类管理</span>
           </el-menu-item>

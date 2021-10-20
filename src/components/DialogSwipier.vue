@@ -66,7 +66,7 @@
     },
     rules: {
       carouselUrl: [{ required: true, message: '图片不能为空', trigger: 'change' }],
-      carouselRank: [{ required: true, message: '排序不能为空', trigger: 'change' }]
+      carouselRank: [{ required: true, message: '排序不能为空', trigger: 'blur' }]
     } as FormRulesMap,
     title: '添加轮播图',
     visable: false

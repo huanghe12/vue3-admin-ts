@@ -41,8 +41,9 @@ export function addGoods(httpType: Method, data: any) {
 // 获取商品分类
 export function getCategories(data: any) {
   return request({
-    url: `/categories?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}&categoryLevel=${data.categoryLevel}&parentId=${data.parentId}`,
-    method: 'get'
+    url: `/categories`,
+    method: 'get',
+    ...data
   })
 }
 // 获取商品列表
@@ -94,6 +95,22 @@ export function changeSwiper(type: Method, data: any) {
   return request({
     url: `/carousels`,
     method: type,
+    data
+  })
+}
+// 新增/修改分类
+export function changeCategory(data: any, method: Method) {
+  return request({
+    url: '/categories',
+    method: method,
+    data
+  })
+}
+// 删除分类
+export function delCategory(data: any) {
+  return request({
+    url: '/categories',
+    method: 'delete',
     data
   })
 }

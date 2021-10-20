@@ -41,6 +41,23 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/pages/HotSell.vue')
   },
   {
+    path: '/category',
+    name: 'category',
+    component: () => import('@/pages/Category.vue'),
+    children: [
+      {
+        path: '/category/level2',
+        name: 'level2',
+        component: () => import('@/pages/Category.vue')
+      },
+      {
+        path: '/category/level3',
+        name: 'level3',
+        component: () => import('@/pages/Category.vue')
+      }
+    ]
+  },
+  {
     path: '/guest',
     name: 'guest',
     component: () => import('@/pages/Guest.vue')

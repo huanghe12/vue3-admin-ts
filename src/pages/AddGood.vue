@@ -145,12 +145,14 @@
     categroy: {
       lazy: true,
       async lazyLoad(node, resolve) {
-        const { level = 0, value } = node
+        const { level = 0, value = 0 } = node
         const res: any = await getCategories({
-          pageNumber: 1,
-          pageSize: 1000,
-          categoryLevel: level + 1,
-          parentId: value || 0
+          params: {
+            pageNumber: 1,
+            pageSize: 1000,
+            categoryLevel: level + 1,
+            parentId: value
+          }
         })
         const list = res.data.list
         const nodes = list.map((el: any) => ({
