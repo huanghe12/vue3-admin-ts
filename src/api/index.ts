@@ -98,6 +98,45 @@ export function changeSwiper(type: Method, data: any) {
     data
   })
 }
+// 查询配置
+export function getIndexConfig(data: any) {
+  return request({
+    url: '/indexConfigs',
+    method: 'get',
+    ...data
+  })
+}
+// 查询配置
+export function changeIndexConfig(data: any, method: 'post' | 'put') {
+  return request({
+    url: '/indexConfigs',
+    method: method,
+    data
+  })
+}
+
+// 删除配置
+export function delIndexConfig(data: any) {
+  return request({
+    url: '/indexConfigs/delete',
+    method: 'post',
+    data
+  })
+}
+// 查询配置详情
+export function getIndexConfigDetail(data: any) {
+  return request({
+    url: `/indexConfigs/${data}`,
+    method: 'get'
+  })
+}
+// 查询分类详情
+export function getCategoryDetail(data: any) {
+  return request({
+    url: `/categories/${data}`,
+    method: 'get'
+  })
+}
 // 新增/修改分类
 export function changeCategory(data: any, method: Method) {
   return request({

@@ -38,7 +38,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/hot',
     name: 'hot',
-    component: () => import('@/pages/HotSell.vue')
+    component: () => import('@/pages/IndexConfig.vue')
+  },
+  {
+    path: '/new',
+    name: 'new',
+    component: () => import('@/pages/IndexConfig.vue')
+  },
+  {
+    path: '/recommend',
+    name: 'recommend',
+    component: () => import('@/pages/IndexConfig.vue')
   },
   {
     path: '/category',
