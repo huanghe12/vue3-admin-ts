@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import router from '@/router'
 import { ElMessage } from 'element-plus'
 import { get } from './auth'
@@ -15,7 +15,7 @@ const service = axios.create({
 
 // 添加请求拦截器
 service.interceptors.request.use(
-  (config: any) => {
+  (config: AxiosRequestConfig) => {
     // 判断有无token
     if (get('token')) {
       config.headers['token'] = get('token')
@@ -24,11 +24,11 @@ service.interceptors.request.use(
     }
     return config
   },
-  (error: any) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 )
 
 // 添加响应拦截器
-service.interceptors.response.use((response: any) => {
+service.interceptors.response.use((response: AxiosResponse) => {
   if (typeof response.data !== 'object') {
     if (ElMessage.error) {
       ElMessage.error('服务端异常！')
@@ -47,7 +47,7 @@ service.interceptors.response.use((response: any) => {
     }
     return Promise.reject(response.data)
   }
-  return response.data.data
+  return response.data
 })
 
 export default service

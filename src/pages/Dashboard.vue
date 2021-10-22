@@ -26,15 +26,17 @@
 </template>
 <script setup lang="ts">
   import * as echarts from 'echarts'
-  import { onMounted } from 'vue-demi'
+  import { onMounted, onUnmounted } from 'vue-demi'
 
-  type EchartsOption = echarts.EChartsCoreOption
+  type EChartsOption = echarts.EChartsOption
+  type EChartsType = echarts.EChartsType
 
+  let myChart: EChartsType
   onMounted(() => {
     // 基于准备好的dom,初始化echarts实例
-    const myChart = echarts.init(document.getElementById('container')!)
+    myChart = echarts.init(document.getElementById('container') as HTMLDivElement)
     // 配置图表
-    const option: EchartsOption = {
+    const option: EChartsOption = {
       // 图表标题
       title: { text: '系统折线图' },
       // 提示框组件
@@ -160,7 +162,10 @@
       ]
     }
     // 使用配置项绘制图表
-    myChart.setOption(option)
+    option && myChart.setOption(option)
+  })
+  onUnmounted(() => {
+    myChart.dispose()
   })
 </script>
 
