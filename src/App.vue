@@ -1,26 +1,65 @@
 <template>
-  <router-view />
+  <el-container>
+    <Aside v-if="state.flag" :current-path="state.currentPath" />
+    <el-container direction="vertical">
+      <Header v-if="state.flag" />
+      <div :class="{ main: state.flag }">
+        <router-view />
+      </div>
+      <Footer v-if="state.flag" />
+    </el-container>
+  </el-container>
 </template>
 <script setup lang="ts">
+  import Header from '@/components/Header.vue'
+  import Footer from '@/components/Footer.vue'
+  import Aside from '@/components/Aside.vue'
   import { useRouter } from 'vue-router'
-  import { get, pathMap, remove } from '@/utils/auth'
-  import { onMounted } from 'vue-demi'
-  // 添加路由守卫
+  import { get, pathMap } from '@/utils/auth'
+  import { reactive } from 'vue-demi'
+
   const router = useRouter()
-  router.beforeEach((to, from, next) => {
+
+  const state = reactive({
+    // 定义一个状态，是否显示侧边栏等组件
+    flag: true,
+    currentPath: '/introduce'
+  })
+  // 全局前置守卫
+  router.beforeEach((to) => {
+    state.currentPath = to.path
     if (to.path === '/login') {
-      next()
+      state.flag = false
+      // vue4.x中next是一个可选参数,return false取消导航,return true或undefined验证导航通过
+      return true
     } else {
       if (!get('token')) {
-        next({ path: '/login' })
+        state.flag = false
+        // 返回一个路由地址跳转到一个不同的地址
+        return { path: '/login' }
       } else {
-        next()
+        state.flag = true
+        return true
       }
     }
+  })
+  // 全局后置守卫
+  router.afterEach((to) => {
+    const { id } = to.query
     if (to.name) {
+      // 改变页面标题
       document.title = pathMap[to.name]
+      if (id && to.name == 'add') {
+        document.title = '编辑商品'
+      }
     }
   })
 </script>
 
-<style></style>
+<style lang="less" scoped>
+  .main {
+    height: calc(100vh - 100px);
+    overflow: auto;
+    padding: 10px;
+  }
+</style>

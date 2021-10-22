@@ -1,6 +1,11 @@
 <template>
   <div class="header">
-    <div class="left"> {{ state.name }} </div>
+    <div class="left">
+      <el-icon v-if="state.flag" class="icon-wrap" @click="router.back()">
+        <Back class="icon-back" />
+      </el-icon>
+      <span>{{ state.name }}</span>
+    </div>
     <div class="right">
       <el-popover placement="bottom" :width="320" trigger="click" popper-class="popper-user-box">
         <template #reference>
@@ -26,14 +31,15 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { Avatar, CaretBottom } from '@element-plus/icons'
-  import { remove, pathMap, get } from '@/utils/auth'
+  import { Avatar, Back, CaretBottom } from '@element-plus/icons'
+  import { remove, pathMap } from '@/utils/auth'
   import { logout, getUserInfo } from '@/api'
   import { onMounted, reactive } from 'vue-demi'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
   const state = reactive({
+    flag: false,
     name: '系统介绍',
     userInfo: {} as any
   })
@@ -51,8 +57,13 @@
     })
   }
   router.afterEach((to) => {
+    const { id } = to.query
     if (to.name) {
       state.name = pathMap[to.name]
+      if (id && to.name == 'add') {
+        state.name = '编辑商品'
+      }
+      state.flag = ['level2', 'level3', 'orderDetails'].includes(<string>to.name)
     }
   })
 </script>
@@ -65,7 +76,20 @@
     border-bottom: 1px solid #e9e9e9;
     padding: 0 20px;
     .left {
-      font-size: 18px;
+      display: flex;
+      align-items: center;
+      .icon-wrap {
+        font-size: 26px;
+        margin-right: 10px;
+      }
+      .icon-back {
+        border: 1px solid #e9e9e9;
+        padding: 4px;
+        border-radius: 50px;
+      }
+      span {
+        font-size: 18px;
+      }
     }
     .right {
       .author {

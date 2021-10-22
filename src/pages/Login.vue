@@ -36,8 +36,8 @@
   import { reactive, ref } from 'vue-demi'
   import { login } from '@/api'
   import { set } from '@/utils/auth'
-  import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
   import { useRouter } from 'vue-router'
+  import type { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 
   const router = useRouter()
   // 使用InstanceType<typeof ElForm>作为范型约束
@@ -64,7 +64,7 @@
           passwordMd5: Md5.hashStr(formData.password)
         }
         login(data).then((res: any) => {
-          set('token', res)
+          set('token', res.data)
           router.push('/')
         })
         // 验证成功后重置表单项
@@ -95,16 +95,16 @@
       display: flex;
       flex-flow: column;
       align-items: center;
-      padding: 20px;
+      padding: 15px;
       width: 420px;
-      padding-bottom: 80px;
+      padding-bottom: 40px;
       padding-top: 50px;
       box-shadow: 0 20px 40px rgba(80, 47, 47, 0.2);
       .top {
         display: flex;
         flex-flow: row;
         align-items: center;
-        margin-bottom: 30px;
+        // margin-bottom: 30px;
         width: 70%;
         img {
           width: 100px;
@@ -126,13 +126,13 @@
       .form-wrap {
         width: 70%;
         .el-form-item {
-          margin-top: 15px;
-          /deep/.el-form-item__label {
+          // margin-top: 15px;
+          :deep(.el-form-item__label) {
             padding: 0;
           }
         }
         .explain {
-          margin-top: 20px;
+          // margin-top: 20px;
           span {
             color: #409eff;
           }

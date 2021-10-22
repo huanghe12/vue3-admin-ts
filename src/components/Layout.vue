@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <!-- <el-container>
     <Aside />
     <el-container direction="vertical">
       <Header />
@@ -8,7 +8,7 @@
       </div>
       <Footer />
     </el-container>
-  </el-container>
+  </el-container> -->
 </template>
 <script lang="ts" setup>
   import Header from './Header.vue'
